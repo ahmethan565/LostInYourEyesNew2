@@ -278,10 +278,8 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
             {
                 Debug.Log("Oyun başlatılıyor... Sahne yükleniyor.");
 
-                if (loadingIndicatorGameObject != null)
-                {
-                    loadingIndicatorGameObject.SetActive(true);
-                }
+                // Tüm oyunculara yükleme ekranını göstermelerini söyle
+                photonView.RPC("ShowLoadingScreen", RpcTarget.All);
 
                 PhotonNetwork.CurrentRoom.IsOpen = false;
                 PhotonNetwork.CurrentRoom.IsVisible = false;
@@ -339,6 +337,23 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("✅ Odadan başarıyla çıkıldı. Ana menüye dönülüyor...");
         SceneManager.LoadScene("MainMenu");
+    }
+
+    // RPC: Tüm oyunculara yükleme ekranını göster
+    [PunRPC]
+    void ShowLoadingScreen()
+    {
+        Debug.Log("🔄 Yükleme ekranı gösteriliyor...");
+        if (loadingIndicatorGameObject != null)
+        {
+            loadingIndicatorGameObject.SetActive(true);
+        }
+        
+        // Oyun başladığında butonları devre dışı bırak
+        if (startButton != null) startButton.interactable = false;
+        if (toggleReadyButton != null) toggleReadyButton.interactable = false;
+        if (closeRoomButton != null) closeRoomButton.interactable = false;
+        if (leaveRoomButton != null) leaveRoomButton.interactable = false;
     }
 
 }
