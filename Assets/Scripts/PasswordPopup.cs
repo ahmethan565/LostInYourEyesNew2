@@ -15,6 +15,11 @@ public class PasswordPopup : MonoBehaviourPunCallbacks
     [SerializeField] private Button joinButton; // Inspector'dan atayın
     [SerializeField] private TextMeshProUGUI errorMessageText; // Hata mesajını gösterecek TMP Text
     [SerializeField] private GameObject loadingIndicator; // Yükleniyor animasyonu/metni
+    
+    // Yeni hata popup elemanları
+    [SerializeField] private GameObject errorPopup; // Hata popup paneli
+    [SerializeField] private TextMeshProUGUI errorPopupText; // Hata popup metni
+    [SerializeField] private Button tryAgainButton; // Try Again butonu
 
     private RoomInfo currentRoom;
     private bool waitingToJoinRoom = false;
@@ -38,6 +43,12 @@ public class PasswordPopup : MonoBehaviourPunCallbacks
             errorMessageText.gameObject.SetActive(false); // Başlangıçta hata mesajını gizle
         if (loadingIndicator != null)
             loadingIndicator.SetActive(false); // Başlangıçta yükleme göstergesini gizle
+        if (errorPopup != null)
+            errorPopup.SetActive(false); // Başlangıçta hata popup'ını gizle
+            
+        // Try Again butonuna event listener ekle
+        if (tryAgainButton != null)
+            tryAgainButton.onClick.AddListener(OnTryAgainButton);
     }
 
     public void Show(RoomInfo room)
@@ -58,10 +69,27 @@ public class PasswordPopup : MonoBehaviourPunCallbacks
         currentRoom = room;
         passwordInput.text = "";
         errorMessageText.gameObject.SetActive(false); // Her gösterimde önceki hata mesajını temizle
+        if (errorPopup != null) errorPopup.SetActive(false); // Hata popup'ını da gizle
         loadingIndicator.SetActive(false); // Yükleme göstergesini kapat
         joinButton.interactable = true; // Butonu aktif et
         panel.SetActive(true);
-        OnJoinButton();
+        
+        // Eğer odada şifre yoksa direkt gir, varsa kullanıcının şifre girmesini bekle
+        string roomPassword = currentRoom.CustomProperties["pwd"] as string;
+        if (string.IsNullOrEmpty(roomPassword))
+        {
+            // Şifre yok, direkt odaya gir
+            Debug.Log("[PasswordPopup] Odada şifre yok, direkt giriliyor...");
+            OnJoinButton();
+        }
+        else
+        {
+            // Şifre var, kullanıcının girmesini bekle
+            Debug.Log("[PasswordPopup] Odada şifre var, kullanıcı girişini bekleniyor...");
+            // Input field'a focus ver ki kullanıcı hemen yazmaya başlayabilsin
+            if (passwordInput != null)
+                passwordInput.Select();
+        }
 
     }
 
@@ -106,7 +134,7 @@ public class PasswordPopup : MonoBehaviourPunCallbacks
         else
         {
             Debug.LogWarning("[PasswordPopup] Wrong Password!");
-            DisplayErrorMessage("Wrong Password!"); // Kullanıcıya hata mesajını göster
+            ShowWrongPasswordPopup(); // Güzel hata popup'ını göster
         }
     }
 
@@ -121,6 +149,35 @@ public class PasswordPopup : MonoBehaviourPunCallbacks
         // Hata durumunda loading göstergesini kapat ve butonu tekrar aktif et
         if (loadingIndicator != null) loadingIndicator.SetActive(false);
         if (joinButton != null) joinButton.interactable = true;
+    }
+
+    // Yanlış şifre için güzel popup göster
+    private void ShowWrongPasswordPopup()
+    {
+        if (errorPopup != null && errorPopupText != null)
+        {
+            errorPopupText.text = "Wrong Password!\nPlease check your password and try again.";
+            errorPopup.SetActive(true);
+        }
+        
+        // Loading göstergesini kapat ve join butonunu aktif et
+        if (loadingIndicator != null) loadingIndicator.SetActive(false);
+        if (joinButton != null) joinButton.interactable = true;
+    }
+
+    // Try Again butonuna basıldığında çağrılır
+    public void OnTryAgainButton()
+    {
+        if (errorPopup != null)
+            errorPopup.SetActive(false);
+            
+        // Input field'ı temizle ki kullanıcı yeni şifre girebilsin
+        if (passwordInput != null)
+            passwordInput.text = "";
+            
+        // Focus'u input field'a ver
+        if (passwordInput != null)
+            passwordInput.Select();
     }
 
     public override void OnLeftRoom()
@@ -182,6 +239,7 @@ public class PasswordPopup : MonoBehaviourPunCallbacks
         loadingIndicator.SetActive(false);
         joinButton.interactable = true;
         errorMessageText.gameObject.SetActive(false);
+        if (errorPopup != null) errorPopup.SetActive(false); // Hata popup'ını da kapat
         waitingToJoinRoom = false; // Çok önemli: eğer bekleyen bir odaya katılma işlemi varsa iptal et.
     }
 }

@@ -300,9 +300,11 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.InRoom)
         {
-            Debug.Log("? Oday� terk ediyorum?");
+            Debug.Log("🚪 Odayı kapatıyorum ve terk ediyorum...");
+            // Hazır durumunu temizle
+            ClearPlayerReadyState();
             PhotonNetwork.LeaveRoom();
-            return; // Sahne ge�i�i callback'te olacak
+            return; // Sahne geçişi OnLeftRoom callback'te olacak
         }
 
         SceneManager.LoadScene("MainMenu");
@@ -313,11 +315,29 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
     {
         if (PhotonNetwork.InRoom)
         {
-            Debug.Log("? Oday� terk ediyorum?");
+            Debug.Log("🚪 Odayı terk ediyorum...");
+            // Hazır durumunu temizle
+            ClearPlayerReadyState();
             PhotonNetwork.LeaveRoom();
-            return; // Sahne ge�i�i callback'te olacak
+            return; // Sahne geçişi OnLeftRoom callback'te olacak
         }
 
+        SceneManager.LoadScene("MainMenu");
+    }
+
+    // Oyuncunun hazır durumunu temizle
+    private void ClearPlayerReadyState()
+    {
+        Hashtable props = new Hashtable();
+        props[PLAYER_READY_PROP] = false;
+        PhotonNetwork.LocalPlayer.SetCustomProperties(props);
+        Debug.Log("🔄 Oyuncu hazır durumu temizlendi.");
+    }
+
+    // Odadan çıktıktan sonra çağrılır
+    public override void OnLeftRoom()
+    {
+        Debug.Log("✅ Odadan başarıyla çıkıldı. Ana menüye dönülüyor...");
         SceneManager.LoadScene("MainMenu");
     }
 

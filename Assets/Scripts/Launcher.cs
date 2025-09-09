@@ -1,4 +1,4 @@
-﻿using Photon.Pun;
+using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
@@ -15,9 +15,9 @@ public class Launcher : MonoBehaviourPunCallbacks
             Debug.Log("🔌 Photon bağlantısı başlatılıyor...");
             PhotonNetwork.ConnectUsingSettings();
         }
-        else
+        else if (PhotonNetwork.IsConnectedAndReady)
         {
-            Debug.Log("📡 Zaten bağlı, Lobby’ye geçiliyor...");
+            Debug.Log("📡 Zaten bağlı, Lobby'ye geçiliyor...");
             PhotonNetwork.JoinLobby();
         }
     }
@@ -25,7 +25,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("✔ Connected to Master – Master Server'a bağlandı.");
-        //PhotonNetwork.JoinLobby();
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnJoinedLobby()
