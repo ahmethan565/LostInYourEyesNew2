@@ -27,6 +27,11 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
     [SerializeField] private Button closeRoomButton;
     // Misafir için: Odadan çık butonu
     [SerializeField] private Button leaveRoomButton;
+    
+    // Çıkış onay popup'ı
+    [SerializeField] private GameObject exitConfirmationPopup;
+    [SerializeField] private Button confirmYesButton;
+    [SerializeField] private Button confirmNoButton;
 
     [SerializeField] private string gameSceneName = "Puzzle1";
 
@@ -52,6 +57,12 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
         if (closeRoomButton == null || leaveRoomButton == null)
         {
             Debug.LogError("[LobbyRoomManager] Çıkış butonları atanmadı! Inspector'dan referans verin.");
+        }
+        
+        // Çıkış onay popup kontrolü
+        if (exitConfirmationPopup == null || confirmYesButton == null || confirmNoButton == null)
+        {
+            Debug.LogError("[LobbyRoomManager] Çıkış onay popup'ı veya butonları atanmadı!");
         }
 
     }
@@ -92,6 +103,18 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
         {
             loadingIndicatorGameObject.SetActive(false);
         }
+        
+        // Çıkış onay popup'ını başlangıçta gizle
+        if (exitConfirmationPopup != null)
+        {
+            exitConfirmationPopup.SetActive(false);
+        }
+        
+        // Onay butonlarına event listener ekle
+        if (confirmYesButton != null)
+            confirmYesButton.onClick.AddListener(OnConfirmYes);
+        if (confirmNoButton != null)
+            confirmNoButton.onClick.AddListener(OnConfirmNo);
 
         UpdatePlayerListUI(); // UI'ları başlangıçta mevcut oyuncu durumlarına göre güncelle
 
@@ -293,23 +316,53 @@ public class LobbyRoomManager : MonoBehaviourPunCallbacks
         }
     }
 
-    // Master Client için: Odayı kapat
+    // Master Client için: Odayı kapat (Onay popup'ını göster)
     public void OnCloseRoomClicked()
     {
-        if (PhotonNetwork.InRoom)
-        {
-            Debug.Log("🚪 Odayı kapatıyorum ve terk ediyorum...");
-            // Hazır durumunu temizle
-            ClearPlayerReadyState();
-            PhotonNetwork.LeaveRoom();
-            return; // Sahne geçişi OnLeftRoom callback'te olacak
-        }
-
-        SceneManager.LoadScene("MainMenu");
+        ShowExitConfirmationPopup();
     }
 
-    // Misafir için: Odadan çık
+    // Misafir için: Odadan çık (Onay popup'ını göster)
     public void OnLeaveRoomClicked()
+    {
+        ShowExitConfirmationPopup();
+    }
+    
+    // Çıkış onay popup'ını göster
+    private void ShowExitConfirmationPopup()
+    {
+        if (exitConfirmationPopup != null)
+        {
+            exitConfirmationPopup.SetActive(true);
+            Debug.Log("🤔 Çıkış onay popup'ı gösteriliyor...");
+        }
+    }
+    
+    // Onay popup'ında "Evet" butonuna basıldığında
+    public void OnConfirmYes()
+    {
+        Debug.Log("✅ Kullanıcı çıkışı onayladı.");
+        
+        // Popup'ı kapat
+        if (exitConfirmationPopup != null)
+            exitConfirmationPopup.SetActive(false);
+            
+        // Gerçek çıkış işlemini yap
+        PerformActualExit();
+    }
+    
+    // Onay popup'ında "Hayır" butonuna basıldığında
+    public void OnConfirmNo()
+    {
+        Debug.Log("❌ Kullanıcı çıkışı iptal etti.");
+        
+        // Sadece popup'ı kapat, başka bir şey yapma
+        if (exitConfirmationPopup != null)
+            exitConfirmationPopup.SetActive(false);
+    }
+    
+    // Gerçek çıkış işlemi
+    private void PerformActualExit()
     {
         if (PhotonNetwork.InRoom)
         {
