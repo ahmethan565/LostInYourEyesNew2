@@ -10,6 +10,7 @@ using ExitGames.Client.Photon;
 using DG.Tweening;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Linq;
 
 public class NoteSpawnerUI : MonoBehaviourPunCallbacks
 {
@@ -82,6 +83,16 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
 
     private bool gameStarted = false;
 
+    [Header("Sounds")]
+    public AudioSource[] atmosphereAudioSources;
+    public AudioSource organAudioSource;
+
+    public AudioClip Music1;
+    public AudioClip Music2;
+    public AudioClip Music3;
+    public AudioClip Music4;
+
+
     void Awake()
     {
         Instance = this;
@@ -89,6 +100,11 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        if (atmosphereAudioSources == null || atmosphereAudioSources.Length == 0)
+            atmosphereAudioSources = GameObject.FindGameObjectsWithTag("Atmosphere")
+                                         .Select(go => go.GetComponent<AudioSource>())
+                                         .ToArray();
+
         noteScript = GetComponent<Note>();
         ExitGames.Client.Photon.Hashtable props = new ExitGames.Client.Photon.Hashtable() { { "playerStartedOrgan", true } };
         PhotonNetwork.LocalPlayer.SetCustomProperties(props);
@@ -103,6 +119,14 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.Instantiate("organGameManager", Vector3.zero, Quaternion.identity);
+        }
+
+        foreach (var audio in atmosphereAudioSources)
+        {
+            if (audio != null)
+            {
+                audio.Pause();
+            }
         }
     }
 
@@ -291,6 +315,8 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         if (points >= 50 && FPointsBool == false)
         {
             // Animate coin appearance instead of just setting active
+            organAudioSource.clip = Music2;
+            organAudioSource.Play();
             AnimateCoinAppearance(Coin1);
             spawnInterval = 0.8f;
             RestartSpawn();
@@ -300,6 +326,8 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         else if (points >= 100 && SPointsBool == false)
         {
             // Animate coin appearance instead of just setting active
+            organAudioSource.clip = Music3;
+            organAudioSource.Play();
             AnimateCoinAppearance(Coin2);
             spawnInterval = 0.7f;
             RestartSpawn();
@@ -309,6 +337,8 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         else if ((points == 200 && TPointsBool == false) || (points == 205 && TPointsBool == false))
         {
             // Animate coin appearance instead of just setting active
+            organAudioSource.clip = Music4;
+            organAudioSource.Play();
             AnimateCoinAppearance(Coin3);
             spawnInterval = 0.6f;
             RestartSpawn();
@@ -408,6 +438,7 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
     {
         if (!FoPointsBool)
         {
+            organAudioSource.Pause();
             fullPointsPanel.SetActive(true);
             spawnInterval = 60;
             DestroyAllWithTag();
@@ -438,6 +469,7 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         RestartSpawn();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        organAudioSource.UnPause();
     }
 
     public void quitAfterFullPoints()
@@ -453,6 +485,16 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         {
             playerDetector.playerController.isMovementFrozen = false;
         }
+
+        foreach (var audio in atmosphereAudioSources)
+        {
+            if (audio != null)
+            {
+                audio.UnPause();
+            }
+        }
+
+        Destroy(organAudioSource);
     }
 
     public void openEscMenu()
@@ -465,6 +507,7 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         Cursor.lockState = CursorLockMode.None;
         escapeMenuOrgan.SetActive(true);
         escapeMenuOpen = true;
+        organAudioSource.Pause();
     }
 
     public void resumeEscapeMenu()
@@ -474,6 +517,7 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         RestartSpawn();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+        organAudioSource.UnPause();
     }
 
     public void canWeStart()
