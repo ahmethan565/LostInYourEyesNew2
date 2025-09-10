@@ -90,6 +90,10 @@ MonoBehaviour:
   - PlayerEnteredElevator
   - PlayerExitedElevator
   - StartElevatorSequence
+  - RPC_SpawnDeathVFX
+  - RPC_PlaySFX3D
+  - RPC_SetBodyVisible
+  - RPC_SpawnVFX
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

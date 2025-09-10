@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Mirac\\OneDrive\\Belgeler\\GitHub\\LostInYourEyesNew2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{5F3D1550-B7E6-C104-FA58-B8B87E3CBB98}|Assembly-CSharp.csproj|c:\\users\\mirac\\onedrive\\belgeler\\github\\lostinyoureyesnew2\\assets\\scripts\\\u00F6l\u00FCmscripti\\playerdeath.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5F3D1550-B7E6-C104-FA58-B8B87E3CBB98}|Assembly-CSharp.csproj|solutionrelative:assets\\scripts\\\u00F6l\u00FCmscripti\\playerdeath.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PlayerDeath.cs",
+              "DocumentMoniker": "C:\\Users\\Mirac\\OneDrive\\Belgeler\\GitHub\\LostInYourEyesNew2\\Assets\\Scripts\\\u00D6l\u00FCmScripti\\PlayerDeath.cs",
+              "RelativeDocumentMoniker": "Assets\\Scripts\\\u00D6l\u00FCmScripti\\PlayerDeath.cs",
+              "ToolTip": "C:\\Users\\Mirac\\OneDrive\\Belgeler\\GitHub\\LostInYourEyesNew2\\Assets\\Scripts\\\u00D6l\u00FCmScripti\\PlayerDeath.cs",
+              "RelativeToolTip": "Assets\\Scripts\\\u00D6l\u00FCmScripti\\PlayerDeath.cs",
+              "ViewState": "AgIAAMIAAAAAAAAAAAAAwGUAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-10T18:57:36.246Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
