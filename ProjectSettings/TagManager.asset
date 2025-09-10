@@ -10,6 +10,7 @@ TagManager:
   - Chest1Lid
   - Rune1
   - Rune2
+  - Atmosphere
   layers:
   - Default
   - TransparentFX

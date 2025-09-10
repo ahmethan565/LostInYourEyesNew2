@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2671e9c487346124f9bcc1e12e406f4a, type: 3}
   m_Name: Table5
   m_EditorClassIdentifier: 
-  tableTexture: {fileID: 2800000, guid: 86713abf25e7efb4ea4867521c0bd3b0, type: 3}
+  tableTexture: {fileID: 2800000, guid: fcc8be1cd08c7bb4bae9cca9ee2ef174, type: 3}
   symbolTextures:
   - {fileID: 2800000, guid: 300e8582c50fcd643ab8d78d051419f3, type: 3}
   - {fileID: 2800000, guid: c4991284003c4b84296b74abb672edd5, type: 3}
@@ -21,4 +21,3 @@ MonoBehaviour:
   - {fileID: 2800000, guid: a2dab31f0ef8bc842a460ffef4103f00, type: 3}
   - {fileID: 2800000, guid: 4e61126f7197cd74f8e953d951f493a9, type: 3}
   - {fileID: 2800000, guid: 45dfe27dfe7961149b00e9c504dcfbad, type: 3}
-  tableTransform: {fileID: 0}
