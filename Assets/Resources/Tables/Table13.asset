@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2671e9c487346124f9bcc1e12e406f4a, type: 3}
   m_Name: Table13
   m_EditorClassIdentifier: 
-  tableTexture: {fileID: 2800000, guid: c38d3f714011c714683a9824e701f398, type: 3}
+  tableTexture: {fileID: 2800000, guid: 1bfddd2df54221242a9fcf8421573f69, type: 3}
   symbolTextures:
   - {fileID: 2800000, guid: d3191fd493b86ad4cb19da2e17ee9233, type: 3}
   - {fileID: 2800000, guid: c27646fea2ed8ae48b0446a40d47038e, type: 3}
