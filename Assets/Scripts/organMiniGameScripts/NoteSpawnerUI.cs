@@ -100,6 +100,7 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
 
     void Start()
     {
+        organAudioSource.clip = Music1;
         if (atmosphereAudioSources == null || atmosphereAudioSources.Length == 0)
             atmosphereAudioSources = GameObject.FindGameObjectsWithTag("Atmosphere")
                                          .Select(go => go.GetComponent<AudioSource>())
