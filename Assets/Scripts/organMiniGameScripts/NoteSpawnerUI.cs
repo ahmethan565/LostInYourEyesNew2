@@ -92,7 +92,7 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
     public AudioClip Music3;
     public AudioClip Music4;
 
-
+    public bool audioStart = false;
     void Awake()
     {
         Instance = this;
