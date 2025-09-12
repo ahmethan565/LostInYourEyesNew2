@@ -8,7 +8,6 @@ public class HitZoneUI : MonoBehaviour
 
     [Header("addPoint")]
     public int addPoint = 10;
-    public NoteSpawnerUI noteSpawner;
 
     void Update()
     {
@@ -29,12 +28,7 @@ public class HitZoneUI : MonoBehaviour
                     {
                         NoteSpawnerUI.Instance.AddPoints(addPoint);
                         FeedbackUIController.Instance?.ShowFeedback(Color.green, note.assignedKey);
-                        note.HandleHitEffect();
-                        if (noteSpawner.musicStart == false)
-                        {
-                            noteSpawner.organAudioSource.Play();
-                            noteSpawner.musicStart = true;
-                        }
+                        note.HandleHitEffect();  // Animasyonlu hit efekti
                         break;
                     }
                 }
