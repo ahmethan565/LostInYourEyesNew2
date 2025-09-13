@@ -93,6 +93,8 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
     public AudioClip Music4;
 
     public bool audioStart = false;
+
+    public bool solved = false;
     void Awake()
     {
         Instance = this;
@@ -349,6 +351,7 @@ public class NoteSpawnerUI : MonoBehaviourPunCallbacks
         else if (points >= 400)
         {
             FullPointsFunction();
+            solved = true;
         }
     }
 

@@ -7,13 +7,15 @@ public class organCapsuleTriggerScript : MonoBehaviour
 
     public playerDetector playerDetector; // Oyuncuyu tespit eden script
 
+    private Canvas activeCanvas;
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") && other.GetComponent<FPSPlayerController>().organPlayed == false)
+        if (other.CompareTag("Player") && organPlayed == false)
         {
-            Instantiate(organCanvas);
+            activeCanvas = Instantiate(organCanvas);
             // organPlayed = true;
-            other.GetComponent<FPSPlayerController>().organPlayed = true;
+            // other.GetComponent<FPSPlayerController>().organPlayed = true;
 
             // FPSPlayerController mı yoksa FPSPlayerControllerSingle mı?
             var controller = other.GetComponent<FPSPlayerController>();
@@ -32,6 +34,17 @@ public class organCapsuleTriggerScript : MonoBehaviour
                 playerDetector.playerControllerSingle = controllerSingle;
                 Debug.Log("Movement frozen for single player controller");
                 return;
+            }
+        }
+    }
+
+    private void Update()
+    {
+        if (activeCanvas != null)
+        {
+            if (organPlayed == false)
+            {
+                activeCanvas.GetComponentInChildren<NoteSpawnerUI>().solved = organPlayed;
             }
         }
     }
